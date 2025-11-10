@@ -1,6 +1,13 @@
 #!/bin/bash
+
+# Load environment variables from .env file if it exists
+if [ -f .env ]; then
+    export $(cat .env | xargs)
+    echo "Loaded environment variables from .env file"
+fi
+
 # Target model name list
-TARGET_MODELS=("claude-3-7-sonnet-latest")
+TARGET_MODELS=("deep_research_bench_my-deep-research")
 
 # Common parameters for both RACE and Citation evaluations
 RAW_DATA_DIR="data/test_data/raw_data"
