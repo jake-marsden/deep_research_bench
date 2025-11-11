@@ -7,7 +7,7 @@ if [ -f .env ]; then
 fi
 
 # Target model name list
-TARGET_MODELS=("deep_research_bench_my-deep-research")
+TARGET_MODELS=("deep_research_bench_gpt-oss-120b") # Change to the name of the jsonl file you want to evaluate
 
 # Common parameters for both RACE and Citation evaluations
 RAW_DATA_DIR="data/test_data/raw_data"
