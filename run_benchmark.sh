@@ -23,7 +23,7 @@ QUERY_DATA_PATH="data/prompt_data/query.jsonl"
 
 # Only process specific language data. Uncomment to enable
 # ONLY_ZH="--only_zh"  # Only process Chinese data
-# ONLY_EN="--only_en"  # Only process English data
+ONLY_EN="--only_en"  # Only process English data
 
 # Force re-evaluation even if results exist. Uncomment to enable
 # FORCE="--force"
