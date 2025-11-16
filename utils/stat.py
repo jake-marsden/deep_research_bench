@@ -24,9 +24,22 @@ if __name__ == "__main__":
             if c['validate_error'] is not None:
                 continue
             for _c in c['validate_res']:
-                if _c['result'] != 'unknown':
+                # Handle two possible formats:
+                # Format 1: {'idx': 0, 'result': 'supported'}
+                # Format 2: {'idx': 0, 'supported': 'explanation'} or {'idx': 0, 'unsupported': 'explanation'}
+                
+                if 'result' in _c:
+                    result = _c['result']
+                elif 'supported' in _c:
+                    result = 'supported'
+                elif 'unsupported' in _c:
+                    result = 'unsupported'
+                else:
+                    result = 'unknown'
+                
+                if result != 'unknown':
                     total_citations += 1
-                    if _c['result'] == 'supported':
+                    if result == 'supported':
                         total_valid_citations += 1
 
 

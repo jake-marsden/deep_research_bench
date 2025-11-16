@@ -11,7 +11,7 @@ from .io_utils import load_jsonl
 
 def scrape(citation_url):
     retries = 0
-    while retries < 3:
+    while retries < 2: # Changed from 3 to 2
         result = scrape_url(citation_url)
         retries += 1
         if 'error' in result:

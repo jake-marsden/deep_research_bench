@@ -77,11 +77,20 @@ class WebScrapingJinaTool:
 
     def __call__(self, url: str) -> Dict[str, Any]:
         try:
+            # Skip invalid URLs not starting with http or https
+            if not url.startswith('http://') and not url.startswith('https://'):
+                return {
+                    'url': url,
+                    'content': '',
+                    'error': f'Invalid URL format: {url}'
+                }
+            
             jina_url = f'https://r.jina.ai/{url}'
             headers = {
                 "Accept": "application/json",
                 'Authorization': self.api_key,
-                'X-Timeout': "60000",
+                'X-Timeout': "15000", # Changed from 60000 (60 seconds) to 15000 (15 seconds)
+                'X-Engine': "default",  # Engine mode: "default", "speed", "quality", "experimental"
                 "X-With-Generated-Alt": "true",
             }
             response = requests.get(jina_url, headers=headers)
@@ -107,10 +116,14 @@ class WebScrapingJinaTool:
                 'error': str(e)
             }
         
-jina_tool = WebScrapingJinaTool()
+# Lazy initialization - only create when actually needed
+_jina_tool = None
 
 def scrape_url(url: str) -> Dict[str, Any]:
-    return jina_tool(url)
+    global _jina_tool
+    if _jina_tool is None:
+        _jina_tool = WebScrapingJinaTool()
+    return _jina_tool(url)
     
 def call_model(user_prompt: str) -> str:
     client = AIClient(model=FACT_Model)
