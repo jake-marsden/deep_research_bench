@@ -20,9 +20,16 @@ if __name__ == "__main__":
     for d in tqdm(data):
         if not d['citations']:
             continue
+        
+        # Count each citation URL once (citation-level evaluation)
         for c in d['citations_deduped'].values():
             if c['validate_error'] is not None:
                 continue
+            
+            # Check if this citation has any valid validate_res entries
+            has_valid_result = False
+            is_citation_valid = False
+            
             for _c in c['validate_res']:
                 # Handle two possible formats:
                 # Format 1: {'idx': 0, 'result': 'supported'}
@@ -38,10 +45,16 @@ if __name__ == "__main__":
                     result = 'unknown'
                 
                 if result != 'unknown':
-                    total_citations += 1
+                    has_valid_result = True
                     if result == 'supported':
-                        total_valid_citations += 1
-
+                        is_citation_valid = True
+                        break  # One supported claim makes the citation valid
+            
+            # Count the citation if it has at least one valid result
+            if has_valid_result:
+                total_citations += 1
+                if is_citation_valid:
+                    total_valid_citations += 1
 
         total_num += 1
 
